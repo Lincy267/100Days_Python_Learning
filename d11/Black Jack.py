@@ -45,6 +45,10 @@ def player_next_draw():
     global player_hands, player_score
     player_hands.append(random.choice(cards))
     player_score = sum(player_hands)
+    if player_score > 21 and 11 in player_hands:
+        player_ace_index = player_hands.index(11)
+        player_hands[player_ace_index] = 1
+        player_score = sum(player_hands)
     print(f"Your cards: {player_hands}, current score: {player_score}")
 
 
@@ -53,6 +57,11 @@ def ai_next_draw():
     ai_next_hand = random.choice(cards)
     ai_hands_list.append(ai_next_hand)
     ai_score = sum(ai_hands_list)
+    if ai_score > 21 and 11 in ai_hands_list:
+        ai_ace_index = ai_hands_list.index(11)
+        ai_hands_list[ai_ace_index] = 1
+        ai_score = sum(ai_hands_list)
+        ai_next_hand = 1
     print(f"Computer's next card: {ai_next_hand}")
 
 
@@ -82,14 +91,8 @@ def black_jack():
             ai_first_draw()
             while not pass_drawing:
                 if_draw = input(f"Type 'y' to get another card, type 'n' to pass: ")
-                if if_draw == "n":
-                    while ai_score < 17:
-                        ai_next_draw()
-                    game_result(player_score, ai_score)
-                    pass_drawing = True
-                elif if_draw == "y":
+                if if_draw == "y":
                     player_next_draw()
-                    print(ai_hands_list)
                     if player_score > 21 or ai_score > 21:
                         if player_score > 21:
                             print(f"Your score: {player_score}. YOU WENT OVER, YOU LOSE!")
@@ -98,10 +101,14 @@ def black_jack():
                         end_game = True
                         black_jack()
                         break
-                    else:
+                elif if_draw == "n":
+                    while ai_score < 17:
                         ai_next_draw()
-                        game_result(player_score, ai_score)
-                        pass_drawing = True
+                    game_result(player_score, ai_score)
+                    pass_drawing = True
+
+
+
 
 black_jack()
 ##################### Hints #####################

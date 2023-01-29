@@ -25,7 +25,7 @@ player_score = 0
 ai_score = 0
 ai_hands_list = []
 
-
+#TODO: the the Ace can count as 11 or 1.
 def player_first_draw():
     global player_hands, player_score
     player_hands = random.choices(cards, k=2)
@@ -56,47 +56,54 @@ def ai_next_draw():
     print(f"Computer's next card: {ai_next_hand}")
 
 
-
-def game_result(player_final_score=player_score, ai_final_score=ai_score):
+def game_result(player_score, ai_score):
     if player_score > ai_score:
-        print("YOU WIN!")
+        print(f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nYOU WIN!")
+    elif ai_score > 21:
+        print(f"{ai_hands_list}, AI score: {ai_score}. AI WENT OVER, YOU WIN!!")
     elif player_score < ai_score:
-        print(("AI WIN!"))
+        print((f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nAI WIN!"))
     else:
-        print("DRAW!")
+        print(f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nDRAW!")
 
 
-end_game = False
-pass_drawing = False
 
-while not end_game:
-    if input(f"Do you want to play a game of Blackjack? Type 'y' or 'n': ") == "n":
-        end_game = True
-    else:
-        clear()
-        print(art.logo)
-        player_first_draw()
-        ai_first_draw()
-        while not pass_drawing:
-            if input(f"Type 'y' to get another card, type 'n' to pass: ") == "n":
-                while ai_score < 17:
-                    ai_next_draw()
-                game_result()
-                pass_drawing = True
-            else:
-                if player_score > 21:
-                    print("YOU WENT OVER, YOU LOSE!")
-                    end_game = True
-                elif ai_score > 21:
-                    print("AI WENT OVER, YOU WIN!")
-                    end_game = True
-                else:
+def black_jack():
+    end_game = False
+    while not end_game:
+        if input(f"Do you want to play a game of Blackjack? Type 'y' or 'n': ") == "n":
+            end_game = True
+        else:
+            pass_drawing = False
+            clear()
+            print(art.logo)
+            ai_hands_list.clear()
+            player_first_draw()
+            ai_first_draw()
+            while not pass_drawing:
+                if_draw = input(f"Type 'y' to get another card, type 'n' to pass: ")
+                if if_draw == "n":
+                    while ai_score < 17:
+                        ai_next_draw()
+                    game_result(player_score, ai_score)
+                    pass_drawing = True
+                elif if_draw == "y":
                     player_next_draw()
-                    ai_next_draw()
+                    print(ai_hands_list)
+                    if player_score > 21 or ai_score > 21:
+                        if player_score > 21:
+                            print(f"Your score: {player_score}. YOU WENT OVER, YOU LOSE!")
+                        else:
+                            print(f"AI score: {ai_score}. AI WENT OVER, YOU WIN!")
+                        end_game = True
+                        black_jack()
+                        break
+                    else:
+                        ai_next_draw()
+                        game_result(player_score, ai_score)
+                        pass_drawing = True
 
-
-
-
+black_jack()
 ##################### Hints #####################
 
 # Hint 1: Go to this website and try out the Blackjack game:

@@ -25,7 +25,6 @@ player_score = 0
 ai_score = 0
 ai_hands_list = []
 
-#TODO: the the Ace can count as 11 or 1.
 def player_first_draw():
     global player_hands, player_score
     player_hands = random.choices(cards, k=2)

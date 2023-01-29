@@ -72,13 +72,13 @@ def ai_next_draw():
 def game_result(player_score, ai_score):
     """Compare the scores between player's and AI's and determine a winner"""
     if player_score > ai_score:
-        return f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nYOU WIN!"
+        print(f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nYOU WIN!")
     elif ai_score > 21:
-        return f"{ai_hands_list}, AI score: {ai_score}. AI WENT OVER, YOU WIN!!"
+        print(f"{ai_hands_list}, AI score: {ai_score}. AI WENT OVER, YOU WIN!!")
     elif player_score < ai_score:
-        return f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nAI WIN!"
+        print(f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nAI WIN!")
     else:
-        return f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nDRAW!"
+        print(f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nDRAW!")
 
 
 def black_jack():

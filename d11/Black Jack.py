@@ -13,7 +13,7 @@ import art
 ## The deck is unlimited in size.
 ## There are no jokers.
 ## The Jack/Queen/King all count as 10.
-## The the Ace can count as 11 or 1.
+## The Ace can count as 11 or 1.
 ## Use the following list as the deck of cards:
 ## cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
 ## The cards in the list have equal probability of being drawn.
@@ -25,7 +25,9 @@ player_score = 0
 ai_score = 0
 ai_hands_list = []
 
+
 def player_first_draw():
+    """The first draw of the player, player gets two cards in hand"""
     global player_hands, player_score
     player_hands = random.choices(cards, k=2)
     player_score = sum(player_hands)
@@ -33,6 +35,7 @@ def player_first_draw():
 
 
 def ai_first_draw():
+    """The first draw of the AI, AI gets one cards in hand"""
     global ai_hands, ai_score, ai_hands_list
     ai_hands = random.choice(cards)
     ai_hands_list.append(ai_hands)
@@ -41,6 +44,7 @@ def ai_first_draw():
 
 
 def player_next_draw():
+    """Player's drawing after first draw"""
     global player_hands, player_score
     player_hands.append(random.choice(cards))
     player_score = sum(player_hands)
@@ -52,6 +56,7 @@ def player_next_draw():
 
 
 def ai_next_draw():
+    """AI's drawing after first draw"""
     global ai_hands_list, ai_score
     ai_next_hand = random.choice(cards)
     ai_hands_list.append(ai_next_hand)
@@ -65,18 +70,19 @@ def ai_next_draw():
 
 
 def game_result(player_score, ai_score):
+    """Compare the scores between player's and AI's and determine a winner"""
     if player_score > ai_score:
-        print(f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nYOU WIN!")
+        return f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nYOU WIN!"
     elif ai_score > 21:
-        print(f"{ai_hands_list}, AI score: {ai_score}. AI WENT OVER, YOU WIN!!")
+        return f"{ai_hands_list}, AI score: {ai_score}. AI WENT OVER, YOU WIN!!"
     elif player_score < ai_score:
-        print((f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nAI WIN!"))
+        return f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nAI WIN!"
     else:
-        print(f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nDRAW!")
-
+        return f"Your final hand: {player_hands}, your final score: {player_score}, \nAI's final hand: {ai_hands_list}, AI's final score: {ai_score}. \nDRAW!"
 
 
 def black_jack():
+    """Main program of the blackjack game"""
     end_game = False
     while not end_game:
         if input(f"Do you want to play a game of Blackjack? Type 'y' or 'n': ") == "n":
@@ -105,8 +111,6 @@ def black_jack():
                         ai_next_draw()
                     game_result(player_score, ai_score)
                     pass_drawing = True
-
-
 
 
 black_jack()

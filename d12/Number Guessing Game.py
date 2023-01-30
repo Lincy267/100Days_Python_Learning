@@ -17,15 +17,17 @@ print("Welcome to the number guessing game!")
 print("I'm thinking of a number between 1 and 100.")
 number_to_guess = random.randint(1, 100)
 
+HARD_ATTEMPTS = 10
+EASY_ATTEMPTS = 5
 
 def select_difficulty():
     difficulty = input("Choose a difficulty. Type 'easy' or 'hard': ")
     if difficulty == "easy":
-        print(f"You have 10 attempts remaining to guess the number.")
-        return 10
+        print(f"You have {HARD_ATTEMPTS} attempts remaining to guess the number.")
+        return HARD_ATTEMPTS
     elif difficulty == "hard":
-        print(f"You have 5 attempts remaining to guess the number.")
-        return 5
+        print(f"You have {EASY_ATTEMPTS} attempts remaining to guess the number.")
+        return EASY_ATTEMPTS
     else:
         return 0
 
@@ -33,7 +35,6 @@ def select_difficulty():
 def player_guess():
     attempts_remain = select_difficulty()
     end_game = False
-    guess = 0
     while not end_game:
         if attempts_remain > 0:
             guess = int(input("Make a guess: "))
@@ -51,7 +52,7 @@ def player_guess():
                 print(f"You got it! The answer was {number_to_guess}")
                 end_game = True
         elif attempts_remain == 0:
-            print("You've run out of guesses, you lose.")
+            print(f"You've run out of guesses, you lose. The answer is {number_to_guess}.")
             end_game = True
 
 

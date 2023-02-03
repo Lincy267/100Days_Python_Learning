@@ -7,6 +7,7 @@ print(art.logo)
 
 
 def extract_data():
+    """Extract data from game_data.py and store it to separate list."""
     names = []
     followers = []
     descriptions = []
@@ -22,10 +23,12 @@ def extract_data():
 
 
 def info(name, description, country):
+    """Retrieve and display the attributes of 'name', 'description', 'country' using the given name."""
     print(f"{name}, {description}, {country}")
 
 
 def compare(follower_count_a, follower_count_b, answer, score):
+    """Compare follower counts of a and b then evaluate answers. Return player score and correct answer."""
     if answer == "A":
         if follower_count_a > follower_count_b:
             print(f"A > B\n{follower_count_a} > {follower_count_b}")
@@ -44,6 +47,7 @@ def compare(follower_count_a, follower_count_b, answer, score):
 
 
 def game(names, followers, descriptions, countries):
+    """Main function."""
     score = 0
     game_over = False
     name_a = random.choice(names)

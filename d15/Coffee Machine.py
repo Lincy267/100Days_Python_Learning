@@ -1,10 +1,10 @@
 import data
-import decimal
 
 coffee_machine_off = False
 total_coins = 0
 total_revenue = 0
 change = 0
+coffee_resources = 0
 
 def receive_coins():
     print("Please insert coins.")
@@ -16,43 +16,66 @@ def receive_coins():
     total_coins = round(sum(coins_inserted),2)
     return total_coins
 
-def get_cost(total_coins):
-    if choice == "espresso":
-        cost_of_coffee = float(data.MENU["espresso"]["cost"])
-        return cost_of_coffee
-    elif choice == "latte":
-        cost_of_coffee = float(data.MENU["latte"]["cost"])
-        return cost_of_coffee
-    elif choice == "cappuccino":
-        cost_of_coffee = float(data.MENU["cappuccino"]["cost"])
+def get_cost():
+    if coffee_type in data.MENU:
+        cost_of_coffee = float(data.MENU[coffee_type]["cost"])
         return cost_of_coffee
 
+
+
 def report():
-    print(f"Water: {data.resources['water']}ml")
-    print(f"Milk: {data.resources['milk']}ml")
-    print(f"Coffee: {data.resources['coffee']}g")
+    print(f"Water: {resources_left['water']}ml")
+    print(f"Milk: {resources_left['milk']}ml")
+    print(f"Coffee: {resources_left['coffee']}g")
     print(f"Money: ${total_revenue}")
 
 
 def transactions(cost_of_coffee, total_coins, total_revenue):
-
     if cost_of_coffee > total_coins:
         print("Sorry that's not enough money. Money refunded.")
+        return total_revenue
     else:
+        resources_left = make_coffee(coffee_type, coffee_resources)
         change = round(total_coins - cost_of_coffee, 2)
-        print(f"${total_coins} received.\nHere is ${change} in change.\nHere is your {choice}. Enjoy!")
+        print(f"${total_coins} received.\nHere is ${change} in change.\nHere is your {coffee_type}. Enjoy!")
         revenue = total_coins - change
         total_revenue += revenue
         return total_revenue
 
 
-while not coffee_machine_off:
-    choice = input("costs:\nespresso: 1.5\nlatte: 2.5\ncappuccino: 3\nWhat would you like? (espresso/latte/cappuccino): ")
-    if choice != "report":
-        total_coins = receive_coins()
-        cost_of_coffee = get_cost(total_coins)
-        total_revenue = transactions(cost_of_coffee, total_coins, total_revenue)
-    else:
-        report()
+def make_coffee(coffee_type, coffee_resources):
+    ingredients = data.MENU[coffee_type]["ingredients"]
+    enough_resources = True
+    for ingredient, amount in ingredients.items():
+        if resources_left[ingredient] < amount:
+            print(f"Sorry, we don't have enough {ingredient} to make a {coffee_type}. ")
+            enough_resources = False
+            return enough_resources
+        else:
+            resources_left[ingredient] -= amount
+    return enough_resources
 
-# TODO: UPDATE DATA AFTER TRANSACTIONS ARE MADE
+
+while not coffee_machine_off:
+    coffee_type = input("What would you like? (espresso/latte/cappuccino): ").lower()
+    resources_left = data.resources
+    if coffee_type in data.MENU:
+        flag = False
+        while not flag:
+            if not make_coffee(coffee_type, coffee_resources):
+                coffee_type = input(
+                    "What would you like? (espresso/latte/cappuccino): ").lower()
+            else:
+                flag = True
+                total_coins = receive_coins()
+                cost_of_coffee = get_cost()
+                total_revenue = transactions(cost_of_coffee, total_coins, total_revenue)
+
+    elif coffee_type == "report":
+            report()
+    else:
+            print("INVALID INPUT")
+            coffee_machine_off = True
+
+# TODO: bug: make_coffee run twice
+
